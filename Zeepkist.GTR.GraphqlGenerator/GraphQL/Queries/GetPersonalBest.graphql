@@ -1,0 +1,14 @@
+﻿query GetPersonalBest($hash: String, $steamId: BigInt) {
+    personalBestGlobals(
+        filter: {
+            level: { hash: { equalTo: $hash } }
+            user: { steamId: { equalTo: $steamId } }
+        }
+    ) {
+        nodes {
+            record {
+                time
+            }
+        }
+    }
+}

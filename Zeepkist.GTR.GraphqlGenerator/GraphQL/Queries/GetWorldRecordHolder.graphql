@@ -1,0 +1,14 @@
+﻿query GetWorldRecordHolder($hash: String) {
+    worldRecordGlobals(
+        filter: { level: { hash: { equalTo: $hash } } }
+    ) {
+        nodes {
+            record {
+                time
+                user {
+                    steamName
+                }
+            }
+        }
+    }
+}

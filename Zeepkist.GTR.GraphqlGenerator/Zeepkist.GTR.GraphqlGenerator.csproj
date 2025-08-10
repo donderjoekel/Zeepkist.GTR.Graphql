@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <LangVersion>latest</LangVersion>
+      <AssemblyName>TNRD.Zeepkist.GTR</AssemblyName>
+      <RootNamespace>TNRD.Zeepkist.GTR</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StrawberryShake.Core" Version="14.3.0" />
+    <PackageReference Include="StrawberryShake.Server" Version="14.3.0" />
+    <PackageReference Include="StrawberryShake.Transport.Http" Version="14.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <GraphQL Update="GraphQL\Queries\GetLevelPoints.graphql">
+      <Generator>MSBuild:GenerateGraphQLCode</Generator>
+    </GraphQL>
+    <GraphQL Update="GraphQL\Queries\GetPersonalBest.graphql">
+      <Generator>MSBuild:GenerateGraphQLCode</Generator>
+    </GraphQL>
+    <GraphQL Update="GraphQL\Queries\GetPersonalBestCount.graphql">
+      <Generator>MSBuild:GenerateGraphQLCode</Generator>
+    </GraphQL>
+    <GraphQL Update="GraphQL\Queries\GetPersonalBests.graphql">
+      <Generator>MSBuild:GenerateGraphQLCode</Generator>
+    </GraphQL>
+    <GraphQL Update="GraphQL\Queries\GetPlayerRankOnLevel.graphql">
+      <Generator>MSBuild:GenerateGraphQLCode</Generator>
+    </GraphQL>
+    <GraphQL Update="GraphQL\Queries\GetTotalUserCount.graphql">
+      <Generator>MSBuild:GenerateGraphQLCode</Generator>
+    </GraphQL>
+    <GraphQL Update="GraphQL\Queries\GetWorldRecordHolder.graphql">
+      <Generator>MSBuild:GenerateGraphQLCode</Generator>
+    </GraphQL>
+  </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="System.Memory">
+            <Aliases>MemoryAlias</Aliases>
+        </Reference>
+    </ItemGroup>
+
+    <Target Name="Modify GraphQL Client" AfterTargets="StrawberryShake_GenerateCode" BeforeTargets="BeforeCompile">
+        <ItemGroup>
+            <GeneratedFiles Include="obj\Debug\net472\berry\GtrClient.Client.cs"/>
+        </ItemGroup>
+        <Exec Command="powershell -ExecutionPolicy Unrestricted -File $(ProjectDir)ModifyGraphQLClient.ps1 @(GeneratedFiles->'%(FullPath)')"/>
+    </Target>
+
+</Project>
